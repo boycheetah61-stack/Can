@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Interface | Ultra Advanced</title>
+    <style>
+        :root {
+            --primary-cyan: #00f2ff;
+            --bg-dark: #0a0b10;
+            --card-bg: #161b22;
+            --text-main: #e6edf3;
+            --ai-accent: #79c0ff;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+        }
+
+        header {
+            border-bottom: 2px solid var(--primary-cyan);
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .status-badge {
+            background: rgba(0, 242, 255, 0.1);
+            color: var(--primary-cyan);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        #chat-display {
+            height: 300px;
+            overflow-y: auto;
+            background: #0d1117;
+            border: 1px solid #30363d;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .msg { margin-bottom: 10px; line-height: 1.4; }
+        .user-msg { color: var(--primary-cyan); font-weight: bold; }
+        .ai-msg { color: var(--ai-accent); }
+
+        .input-area {
+            display: flex;
+            gap: 10px;
+        }
+
+        input[type="text"] {
+            flex-grow: 1;
+            background: #0d1117;
+            border: 1px solid var(--primary-cyan);
+            color: white;
+            padding: 12px;
+            border-radius: 5px;
+            outline: none;
+        }
+
+        .send-btn {
+            background: var(--primary-cyan);
+            color: var(--bg-dark);
+            border: none;
+            padding: 0 20px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        code {
+            background: #000;
+            display: block;
+            padding: 15px;
+            border-radius: 5px;
+            color: #d1d5db;
+            overflow-x: auto;
+            border-left: 4px solid var(--primary-cyan);
+            margin-top: 10px;
+        }
+
+        .btn-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        button.mode-btn {
+            background: transparent;
+            color: var(--primary-cyan);
+            border: 1px solid var(--primary-cyan);
+            padding: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        button.mode-btn:hover {
+            background: var(--primary-cyan);
+            color: var(--bg-dark);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>ULTRA-ADVANCED INTERFACE <span class="status-badge">Live System</span></h1>
+    </header>
+
+    <div class="card">
+        <h3>AI Communication Box</h3>
+        <div id="chat-display">
+            <div class="msg ai-msg">> System initialized. Awaiting user command...</div>
+        </div>
+        <div class="input-area">
+            <input type="text" id="user-input" placeholder="Type your command here..." onkeypress="handleKey(event)">
+            <button class="send-btn" onclick="sendMessage()">SEND</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Core Logic: API & Server Configuration</h3>
+        <code>
+            const API_KEY = "API==KEY";<br>
+            const SERVER_URL = "https://your-server-api.com/v1/chat"; // Add your server URL here
+        </code>
+    </div>
+
+    <div class="card">
+        <h3>System Modes</h3>
+        <div class="btn-group">
+            <button class="mode-btn" onclick="setMode('DEV')">DEV MODE</button>
+            <button class="mode-btn" onclick="setMode('CREATOR')">CREATOR MODE</button>
+            <button class="mode-btn" onclick="setMode('HACK')">HACK MODE</button>
+            <button class="mode-btn" onclick="setMode('STUDY')">STUDY MODE</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const chatDisplay = document.getElementById('chat-display');
+    const userInput = document.getElementById('user-input');
+    
+    // SERVER CONFIGURATION
+    const API_KEY = "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";
+    const SERVER_URL = "https://7dfd7c14-9377-4d2e-9c2b-c434e1890a0a-00-12jxbas0hnc2k.pike.replit.dev/"; 
+
+    function handleKey(e) {
+        if (e.key === 'Enter') sendMessage();
+    }
+
+    async function sendMessage() {
+        const text = userInput.value.trim();
+        if (!text) return;
+
+        appendMessage('USER', text);
+        userInput.value = '';
+
+        // --- SERVER INTEGRATION LOGIC ---
+        try {
+            const response = await fetch(SERVER_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${API_KEY}`
+                },
+                body: JSON.stringify({ message: text })
+            });
+
+            const data = await response.json();
+            appendMessage('AI', data.reply || "Server response received but no text found.");
+        } catch (error) {
+            console.error("Connection Error:", error);
+            // Fallback to local response if server is not reachable
+            setTimeout(() => {
+                appendMessage('AI', "Local Fallback: Unable to reach server. Error recorded.");
+            }, 600);
+        }
+    }
+
+    function appendMessage(sender, text) {
+        const msgDiv = document.createElement('div');
+        msgDiv.className = sender === 'USER' ? 'msg user-msg' : 'msg ai-msg';
+        msgDiv.innerText = (sender === 'USER' ? '> ' : '>> ') + text;
+        chatDisplay.appendChild(msgDiv);
+        chatDisplay.scrollTop = chatDisplay.scrollHeight;
+    }
+
+    function setMode(mode) {
+        appendMessage('AI', `Switching to ${mode} MODE. Adaptive behavior updated.`);
+    }
+</script>
+
+</body>
+</html>
